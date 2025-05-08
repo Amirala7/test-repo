@@ -1,4 +1,4 @@
-const Save = require('../models/save');
+const Result = require('../models/result');
 
 exports.saveGameData = async (req, res) => {
     const { userID, gameDate, failed, difficulty, completed, timeTaken } = req.body;
@@ -11,7 +11,7 @@ exports.saveGameData = async (req, res) => {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
-        const newSave = new Save({
+        const newResult = new Result({
             userID,
             gameDate,
             failed,
@@ -20,10 +20,25 @@ exports.saveGameData = async (req, res) => {
             timeTaken,
         });
 
-        await newSave.save(); 
+        await newResult.save(); 
         res.status(201).json({ message: 'Game data saved successfully' });
     } catch (error) {
         console.error('Error saving game data:', error);
         res.status(500).json({ message: 'Error saving game data', error });
+    }
+};  
+
+
+exports.getResultsData = async (req, res) => {
+    const { userID } = req.params;
+    // Could introduce a check here to see if the logged in user is the same as the userID
+
+    try {
+        const resultsData = await Result.find({ userID });
+        console.log('Returning results data:', resultsData);
+        res.status(200).json(resultsData);
+    } catch (error) {
+        console.error('Error fetching results data:', error);
+        res.status(500).json({ message: 'Error fetching results data', error });
     }
 };

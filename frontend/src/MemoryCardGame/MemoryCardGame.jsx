@@ -6,9 +6,7 @@ import PropTypes from "prop-types";
 import { useSpring, animated } from "@react-spring/web";
 import background from "../assets/images/mode1.gif";
 import bgMusic from "../assets/audio/memory-bg.mp3";
-import axios from "axios";
-
-
+import { memoryRepository } from '../repositories/memoryRepository';
 
 const defaultDifficulty = "Hard";
 
@@ -48,15 +46,13 @@ const shuffleArray = (array) => {
   }
   return shuffledArray;
 };
+
 const saveGameData = async (gameData) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/memory/save", gameData, {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    console.log("Game data saved successfully", response.data);
+    await memoryRepository.saveGameData(gameData);
+    console.log("Game data saved successfully");
   } catch (error) {
-    console.error("Error saving game data:", error.response ? error.response.data : error.message);
+    console.error("Error saving game data:", error);
   }
 };
 

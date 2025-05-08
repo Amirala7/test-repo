@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const saveSchema = new mongoose.Schema({
+const resultSchema = new mongoose.Schema({
   userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
   gameDate: { type: Date, required: true, default: Date.now },
   failed: { type: Number, required: true },
@@ -13,4 +13,4 @@ const saveSchema = new mongoose.Schema({
   timeTaken: { type: Number, required: true },
 });
 
-module.exports = mongoose.model('Save', saveSchema);
+module.exports = mongoose.model('Result', resultSchema);
